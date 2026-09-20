@@ -4,7 +4,7 @@
  * - note / リール / 単発ポスト:自動投稿はせず、本文をDiscordに通知して人が仕上げる(半自動)
  *   通知後はステータスを「レビュー中」にし、重複通知を防ぐ(投稿完了後は人が「投稿済み」へ変更)
  */
-import { getScheduledPosts, markPostAsError, notion } from "./notion.js";
+import { getScheduledPosts, isPostingPaused, markPostAsError, notion } from "./notion.js";
 import { blocksToSlides, blocksToPlainText } from "./slides.js";
 import { renderSlidesToImages } from "./imageGen.js";
 import { notifyManualPostNeeded, notifyError } from "./notify.js";
@@ -21,6 +21,11 @@ async function markNeedsManualAction(pageId: string) {
 }
 
 async function main() {
+  if (await isPostingPaused()) {
+    console.log("運用設定で一時停止中のため、今回は何もせず終了します");
+    return;
+  }
+
   const posts = await getScheduledPosts();
   console.log(`対象レコード: ${posts.length}件`);
 

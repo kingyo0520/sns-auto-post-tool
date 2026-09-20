@@ -79,6 +79,19 @@ export async function markPostAsPublished(pageId: string, note?: string) {
   });
 }
 
+/**
+ * Notion「SNS自動投稿ツール 運用設定」DBのチェックボックスを見て、一時停止中かどうかを判定する。
+ * ユーザーがコードやGitHubを触らずに、Notion上のチェック一つで止められるようにするための仕組み。
+ */
+export async function isPostingPaused(): Promise<boolean> {
+  const response = await notion.databases.query({
+    database_id: config.notionSettingsDatabaseId,
+    page_size: 1,
+  });
+  const page = response.results[0] as any;
+  return page?.properties?.["投稿を一時停止する"]?.checkbox === true;
+}
+
 export async function markPostAsError(pageId: string) {
   await notion.pages.update({
     page_id: pageId,

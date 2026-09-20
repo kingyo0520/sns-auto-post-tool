@@ -3,7 +3,7 @@
  * generate.ts で生成した画像がGitHub Pages等で公開URLとして参照可能になった後に実行する。
  */
 import { config } from "./config.js";
-import { getScheduledPosts, markPostAsPublished, markPostAsError } from "./notion.js";
+import { getScheduledPosts, isPostingPaused, markPostAsPublished, markPostAsError } from "./notion.js";
 import { blocksToSlides } from "./slides.js";
 import { publishCarousel } from "./instagram.js";
 import { notifyPublished, notifyError } from "./notify.js";
@@ -13,6 +13,11 @@ function buildCaption(hashtags: string, cta: string): string {
 }
 
 async function main() {
+  if (await isPostingPaused()) {
+    console.log("運用設定で一時停止中のため、今回は何もせず終了します");
+    return;
+  }
+
   if (!config.publicImageBaseUrl) {
     throw new Error("PUBLIC_IMAGE_BASE_URLが未設定です(GitHub PagesのURLを指定してください)");
   }

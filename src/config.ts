@@ -11,6 +11,7 @@ function required(name: string): string {
 export const config = {
   notionApiKey: required("NOTION_API_KEY"),
   notionDatabaseId: required("NOTION_DATABASE_ID"),
+  notionSettingsDatabaseId: required("NOTION_SETTINGS_DATABASE_ID"),
   igBusinessAccountId: process.env.IG_BUSINESS_ACCOUNT_ID ?? "",
   igAccessToken: process.env.IG_ACCESS_TOKEN ?? "",
   publicImageBaseUrl: process.env.PUBLIC_IMAGE_BASE_URL ?? "",
