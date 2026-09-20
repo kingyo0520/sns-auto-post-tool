@@ -30,7 +30,7 @@ X(Twitter)は有料APIが必須のため対象外。
 
 1. https://www.notion.so/my-integrations で新規Integrationを作成し、APIキー(`secret_...`)を取得
 2. 対象のデータベース(SNS投稿コンテンツ管理)を開き、右上の「•••」→「コネクト」から作成したIntegrationを接続
-3. データベースのURLからデータベースIDを確認(既存の値: `da8550cd796e411ab9178e4dfaf8bea0`)
+3. データベースのURLからデータベースIDを確認(既存の値: `894f67d76f64823797ce813f569adb03`。データベースを複製した場合、複製先の新しいIDに読み替えてください)
 
 ### 2. Instagram / Facebook Developer側の準備
 
