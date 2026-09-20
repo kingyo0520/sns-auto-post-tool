@@ -16,12 +16,11 @@ export interface PostRecord {
   blocks: any[];
 }
 
-function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 /**
- * ステータス=予約済み かつ 投稿予定日<=今日 のレコードを取得する。
+ * ステータス=予約済み かつ 投稿予定日(日時)<=実行時刻 のレコードを取得する。
+ * 1日2回(朝7時/夕方17時)実行される運用のため、日付だけでなく時刻まで見て
+ * 「まだ来ていない時間帯の予約」を誤って先取りしないようにする。
+ * 予約時は「投稿予定日」に時刻まで設定すること(例:朝の投稿は07:00、夕方は17:00)。
  * Xは無料スタックの対象外のため除外する。
  */
 export async function getScheduledPosts(): Promise<PostRecord[]> {
@@ -30,7 +29,7 @@ export async function getScheduledPosts(): Promise<PostRecord[]> {
     filter: {
       and: [
         { property: "ステータス", select: { equals: "予約済み" } },
-        { property: "投稿予定日", date: { on_or_before: todayISO() } },
+        { property: "投稿予定日", date: { on_or_before: new Date().toISOString() } },
         { property: "媒体", select: { does_not_equal: "X" } },
       ],
     },
